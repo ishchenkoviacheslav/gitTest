@@ -985,7 +985,7 @@ namespace gitTest
 
         static void Main(string[] args)
         {
-            IntPtr ptr = FindWindowByCaption((IntPtr)0, "Rechner");
+            IntPtr ptr = FindWindow("CAO.Faktura", null);
             
             if (ptr==null)
             {
