@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Runtime.InteropServices;
@@ -995,7 +996,6 @@ namespace gitTest
         SCANCODE = 0x0008,
         UNICODE = 0x0004
     }
-
     internal enum VirtualKeyShort : short
     {
         ///<summary>
@@ -1864,7 +1864,6 @@ namespace gitTest
         PA1 = 0,
         OEM_CLEAR = 0,
     }
-
     [Flags]
     internal enum MOUSEEVENTF : uint
     {
@@ -1913,7 +1912,7 @@ namespace gitTest
     public struct INPUT
     {
         internal InputType type;
-        internal InputUnion U;
+        internal InputUnion U; // U
         internal static int Size
         {
             get { return Marshal.SizeOf(typeof(INPUT)); }
@@ -1937,7 +1936,6 @@ namespace gitTest
         [FieldOffset(0)]
         internal HARDWAREINPUT hi;
     }
-
 
     enum GetWindowType : uint
     {
@@ -1992,6 +1990,10 @@ namespace gitTest
     }
     class Program
     {
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+
         /// <summary>
         /// Synthesizes keystrokes, mouse motions, and button clicks.
         /// </summary>
@@ -2017,33 +2019,119 @@ namespace gitTest
 
         static void Main(string[] args)
         {
-            IntPtr ptr = FindWindow("CAO.Faktura", null);
-            if (ptr == IntPtr.Zero)
-            {
-                Console.WriteLine("CAO nicht started!");
-                Console.WriteLine(ptr.ToString());
+            //IntPtr ptr = FindWindow("CAO.Faktura", null);
+            //if (ptr == IntPtr.Zero)
+            //{
+            //    Console.WriteLine("CAO nicht started!");
+            //    Console.WriteLine(ptr.ToString());
 
-            }
-            else//проходит проверку если висит окно авторизации - нужно проверять дальше есть ли авторизация
-            {
-                Console.WriteLine("CAO OK!");
-                Console.WriteLine(ptr.ToString());
+            //}
+            //else//проходит проверку если висит окно авторизации - нужно проверять дальше есть ли авторизация
+            //{
+            //    Console.WriteLine("CAO OK!");
+            //    Console.WriteLine(ptr.ToString());
 
-                StringBuilder captions = new StringBuilder();
-                PostMessage(new HandleRef(null, ptr), (uint)WM.CLOSE, (System.IntPtr)0, (System.IntPtr)0);
-                ptr = GetWindow(ptr, GetWindowType.GW_CHILD);
-                while (ptr != IntPtr.Zero)
-                {
-                    //GetWindowText(ptr, captions, 500);
-                    //Console.WriteLine(captions.ToString());
-                    //captions.Clear();
-                    Console.WriteLine(ptr.ToString());
-                    ptr = GetWindow(ptr, GetWindowType.GW_HWNDNEXT);
-                }
-            }
-        }
-    }
-}
+            //    StringBuilder captions = new StringBuilder();
+            //    PostMessage(new HandleRef(null, ptr), (uint)WM.CLOSE, (System.IntPtr)0, (System.IntPtr)0);
+            //    ptr = GetWindow(ptr, GetWindowType.GW_CHILD);
+            //    while (ptr != IntPtr.Zero)
+            //    {
+            //        //GetWindowText(ptr, captions, 500);
+            //        //Console.WriteLine(captions.ToString());
+            //        //captions.Clear();
+            //        Console.WriteLine(ptr.ToString());
+            //        ptr = GetWindow(ptr, GetWindowType.GW_HWNDNEXT);
+            //    }
+            //}
+            INPUT[] pInputs = new INPUT[]
+               {
+                  new INPUT()
+                  {
+                     type = InputType.KEYBOARD,
+                     U = new InputUnion()
+                     {
+                         ki = new KEYBDINPUT()
+                         {
+                            wScan = ScanCodeShort.MENU,
+                            wVk = VirtualKeyShort.MENU
+                         }
+                     }
+                  },
+                  new INPUT()
+                  {
+                     type = InputType.KEYBOARD,
+                     U = new InputUnion()
+                     {
+                         ki = new KEYBDINPUT()
+                         {
+                            wScan = ScanCodeShort.CONTROL,
+                            wVk = VirtualKeyShort.CONTROL,
+                           // dwFlags = KEYEVENTF.KEYUP
+                         }
+                     }
+                  },
+                  new INPUT()
+                  {
+                     type = InputType.KEYBOARD,
+                     U = new InputUnion()
+                     {
+                         ki = new KEYBDINPUT()
+                         {
+                            wScan = ScanCodeShort.KEY_U,
+                            wVk = VirtualKeyShort.KEY_U,
+                           // dwFlags = KEYEVENTF.KEYUP
+                         }
+                     }
+                  }
+
+               };
+            IntPtr hWindow = FindWindow("CAO.Faktura", null);
+            SetForegroundWindow(hWindow);
+           // Thread.Sleep(2500);
+            SendInput((uint)pInputs.Length, pInputs, INPUT.Size);
+        }//main
+    }//Program
+}//namespace
+
+
+//new INPUT()
+// {
+//type = InputType.KEYBOARD,
+//ki = new KEYBDINPUT()
+//{
+//   wScan = ScanCodeShort.KEY_S,
+//   wVk = VirtualKeyShort.KEY_S
+//}
+// },
+// new INPUT()
+// {
+//type = InputType.KEYBOARD,
+//ki = new KEYBDINPUT()
+//{
+//   wScan = ScanCodeShort.KEY_S,
+//   wVk = VirtualKeyShort.KEY_S,
+//   dwFlags = KEYEVENTF.KEYUP
+//}
+// },
+// new INPUT()
+// {
+//type = InputType.KEYBOARD,
+//ki = new KEYBDINPUT()
+//{
+//   wScan = ScanCodeShort.KEY_S,
+//   wVk = VirtualKeyShort.KEY_S
+//}
+// },
+// new INPUT()
+// {
+//type = InputType.KEYBOARD,
+//ki = new KEYBDINPUT()
+//{
+//   wScan = ScanCodeShort.KEY_S,
+//   wVk = VirtualKeyShort.KEY_S,
+//   dwFlags = KEYEVENTF.KEYUP
+//}
+// }
 
 
 //HWND Walk(HWND Current, char* name)
@@ -2064,4 +2152,3 @@ namespace gitTest
 //  }
 //    return NULL; // объект не найден
 //}
-
