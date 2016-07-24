@@ -1990,6 +1990,9 @@ namespace gitTest
     }
     class Program
     {
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool SetForegroundWindow(IntPtr hWnd);
@@ -2016,34 +2019,25 @@ namespace gitTest
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
-
+       static IntPtr hWindow = IntPtr.Zero;
         static void Main(string[] args)
         {
-            //IntPtr ptr = FindWindow("CAO.Faktura", null);
-            //if (ptr == IntPtr.Zero)
-            //{
-            //    Console.WriteLine("CAO nicht started!");
-            //    Console.WriteLine(ptr.ToString());
+            hWindow = FindWindow("CAO.Faktura", null);
+            if (hWindow == IntPtr.Zero)
+            {
+                Console.WriteLine("CAO nicht started!");
+                Console.WriteLine(hWindow.ToString());
 
-            //}
-            //else//проходит проверку если висит окно авторизации - нужно проверять дальше есть ли авторизация
-            //{
-            //    Console.WriteLine("CAO OK!");
-            //    Console.WriteLine(ptr.ToString());
+            }
+            else
+            {
+                if (true)//проходит проверку если висит окно авторизации - нужно проверять дальше есть ли авторизация
+                {
+                    Console.WriteLine("CAO OK!");
+                    Console.WriteLine(hWindow.ToString());
 
-            //    StringBuilder captions = new StringBuilder();
-            //    PostMessage(new HandleRef(null, ptr), (uint)WM.CLOSE, (System.IntPtr)0, (System.IntPtr)0);
-            //    ptr = GetWindow(ptr, GetWindowType.GW_CHILD);
-            //    while (ptr != IntPtr.Zero)
-            //    {
-            //        //GetWindowText(ptr, captions, 500);
-            //        //Console.WriteLine(captions.ToString());
-            //        //captions.Clear();
-            //        Console.WriteLine(ptr.ToString());
-            //        ptr = GetWindow(ptr, GetWindowType.GW_HWNDNEXT);
-            //    }
-            //}
-            INPUT[] pInputs = new INPUT[]
+                    //открыть страницу нового ауфтрагов
+                    INPUT[] pInputs = new INPUT[]
                {
                   new INPUT()
                   {
@@ -2082,58 +2076,177 @@ namespace gitTest
                            // dwFlags = KEYEVENTF.KEYUP
                          }
                      }
-                  }
-
+                  },
+                  new INPUT()
+                  {
+                     type = InputType.KEYBOARD,
+                     U = new InputUnion()
+                     {
+                         ki = new KEYBDINPUT()
+                         {
+                            wScan = ScanCodeShort.KEY_U,
+                            wVk = VirtualKeyShort.KEY_U,
+                            dwFlags = KEYEVENTF.KEYUP
+                         }
+                     }
+                  },
+                  new INPUT()
+                  {
+                     type = InputType.KEYBOARD,
+                     U = new InputUnion()
+                     {
+                         ki = new KEYBDINPUT()
+                         {
+                            wScan = ScanCodeShort.CONTROL,
+                            wVk = VirtualKeyShort.CONTROL,
+                            dwFlags = KEYEVENTF.KEYUP
+                         }
+                     }
+                  },
+                  new INPUT()
+                  {
+                     type = InputType.KEYBOARD,
+                     U = new InputUnion()
+                     {
+                         ki = new KEYBDINPUT()
+                         {
+                            wScan = ScanCodeShort.MENU,
+                            wVk = VirtualKeyShort.MENU,
+                           dwFlags = KEYEVENTF.KEYUP
+                         }
+                     }
+                  },
                };
-            IntPtr hWindow = FindWindow("CAO.Faktura", null);
-            SetForegroundWindow(hWindow);
-           // Thread.Sleep(2500);
-            SendInput((uint)pInputs.Length, pInputs, INPUT.Size);
+                    SetForegroundWindow(hWindow);
+                    SendInput((uint)pInputs.Length, pInputs, INPUT.Size);//
+
+                    Thread.Sleep(1000);
+
+                    //создать новый ауфтраг, без данных
+                    INPUT[] pInputsNew = new INPUT[]
+                    {
+                        new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.CONTROL,
+                                      wVk = VirtualKeyShort.CONTROL
+                                  }
+                              }
+                          },
+                          new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.INSERT,
+                                      wVk = VirtualKeyShort.INSERT
+                                  }
+                              }
+                          },
+                          new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.CONTROL,
+                                      wVk = VirtualKeyShort.CONTROL,
+                                      dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          },
+                          new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.INSERT,
+                                      wVk = VirtualKeyShort.INSERT,
+                                      dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          }
+                    };
+                    SetForegroundWindow(hWindow);
+                    SendInput((uint)pInputsNew.Length, pInputsNew, INPUT.Size);
+
+                    Thread.Sleep(1000);
+
+                   IntPtr ptrKund = kleinBtnListKund(hWindow);
+
+                }
+                else
+                {
+                    Console.WriteLine("CAO nicht melden!");
+                }
+            }
         }//main
+
+        static IntPtr kleinBtnListKund(IntPtr hWnd)
+        {
+            //TCaoGroupBox Kundendaten
+            //TJvDBComboEdit - текстбокс с кноп.
+            //TWinControl - мал. кноп
+            if (hWnd != IntPtr.Zero)
+            {
+
+
+                StringBuilder className = new StringBuilder();
+                StringBuilder textWind = new StringBuilder();
+                IntPtr ptr = IntPtr.Zero;
+                ptr = GetWindow(hWnd, GetWindowType.GW_CHILD);
+                while (true)
+                {
+                    GetClassName(ptr, className, 500); // получает имя класса-окна
+                    GetWindowText(ptr, textWind, 500);//получает заголовок класса
+                    Console.WriteLine("Class Name: \t" + className.ToString() + "t\t\t\t\t\t" + "Text Window: \t" + textWind.ToString());
+                    if (className.ToString() == "TCaoGroupBox")
+                    {
+                        //click
+                        Console.WriteLine("fenster war gefunden");//тут рекурсия
+                        kleinBtnListKund(ptr);
+                        break;
+                    }
+                    kleinBtnListKund(ptr);//тут рекурсия
+                    ptr = GetWindow(ptr, GetWindowType.GW_HWNDNEXT);
+                    className.Clear();
+                    if (ptr == IntPtr.Zero)
+                    {
+                        Console.WriteLine(" mehr fenster nicht gefunden");
+                        break;
+                    }
+                }
+
+                return ptr;
+            }
+            Console.WriteLine("gekommet leer IntPtr");
+            return IntPtr.Zero;
+        }
+
     }//Program
 }//namespace
 
-
-//new INPUT()
-// {
-//type = InputType.KEYBOARD,
-//ki = new KEYBDINPUT()
-//{
-//   wScan = ScanCodeShort.KEY_S,
-//   wVk = VirtualKeyShort.KEY_S
-//}
-// },
-// new INPUT()
-// {
-//type = InputType.KEYBOARD,
-//ki = new KEYBDINPUT()
-//{
-//   wScan = ScanCodeShort.KEY_S,
-//   wVk = VirtualKeyShort.KEY_S,
-//   dwFlags = KEYEVENTF.KEYUP
-//}
-// },
-// new INPUT()
-// {
-//type = InputType.KEYBOARD,
-//ki = new KEYBDINPUT()
-//{
-//   wScan = ScanCodeShort.KEY_S,
-//   wVk = VirtualKeyShort.KEY_S
-//}
-// },
-// new INPUT()
-// {
-//type = InputType.KEYBOARD,
-//ki = new KEYBDINPUT()
-//{
-//   wScan = ScanCodeShort.KEY_S,
-//   wVk = VirtualKeyShort.KEY_S,
-//   dwFlags = KEYEVENTF.KEYUP
-//}
-// }
-
-
+                //StringBuilder captions = new StringBuilder();
+                //PostMessage(new HandleRef(null, ptr), (uint)WM.CLOSE, (System.IntPtr)0, (System.IntPtr)0);
+                //ptr = GetWindow(ptr, GetWindowType.GW_CHILD);
+                //while (ptr != IntPtr.Zero)
+                //{
+                //    //GetWindowText(ptr, captions, 500);
+                //    //Console.WriteLine(captions.ToString());
+                //    //captions.Clear();
+                //    Console.WriteLine(ptr.ToString());
+                //    ptr = GetWindow(ptr, GetWindowType.GW_HWNDNEXT);
+                //}
+                
 //HWND Walk(HWND Current, char* name)
 //{
 //    HWND temp;
