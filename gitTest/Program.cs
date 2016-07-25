@@ -2215,6 +2215,326 @@ namespace gitTest
                     SetForegroundWindow(hWindow);
                     SendInput((uint)pInputKundList.Length, pInputKundList, INPUT.Size);
 
+                    Thread.Sleep(1000);
+                    INPUT[] suchBegr = new INPUT[]//при открытии нового окна поиск в бд кундов автоматически стоит по suchbegrif
+                         {
+                             new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.BACK,
+                                      wVk = VirtualKeyShort.BACK
+                                  }
+                              }
+                          },
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.BACK,
+                                      wVk = VirtualKeyShort.BACK,
+                                     dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          },
+                             new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.BACK,
+                                      wVk = VirtualKeyShort.BACK
+                                  }
+                              }
+                          },
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.BACK,
+                                      wVk = VirtualKeyShort.BACK,
+                                     dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          },
+                             new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.BACK,
+                                      wVk = VirtualKeyShort.BACK
+                                  }
+                              }
+                          },
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.BACK,
+                                      wVk = VirtualKeyShort.BACK,
+                                     dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          },
+                             new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.BACK,
+                                      wVk = VirtualKeyShort.BACK
+                                  }
+                              }
+                          },
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.BACK,
+                                      wVk = VirtualKeyShort.BACK,
+                                     dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          },
+                             new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.BACK,
+                                      wVk = VirtualKeyShort.BACK
+                                  }
+                              }
+                          },
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.BACK,
+                                      wVk = VirtualKeyShort.BACK,
+                                     dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          },
+                             new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.BACK,
+                                      wVk = VirtualKeyShort.BACK
+                                  }
+                              }
+                          },
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.BACK,
+                                      wVk = VirtualKeyShort.BACK,
+                                     dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          },
+                             new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.BACK,
+                                      wVk = VirtualKeyShort.BACK
+                                  }
+                              }
+                          },
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.BACK,
+                                      wVk = VirtualKeyShort.BACK,
+                                     dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          },
+                             new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.KEY_A,
+                                      wVk = VirtualKeyShort.KEY_A
+                                  }
+                              }
+                          },
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.KEY_A,
+                                      wVk = VirtualKeyShort.KEY_A,
+                                     dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          },
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.KEY_A,
+                                      wVk = VirtualKeyShort.KEY_A
+                                  }
+                              }
+                          },
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.KEY_A,
+                                      wVk = VirtualKeyShort.KEY_A,
+                                      dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          },
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.KEY_A,
+                                      wVk = VirtualKeyShort.KEY_A,
+                                  }
+                              }
+                          },
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.KEY_A,
+                                      wVk = VirtualKeyShort.KEY_A,
+                                      dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          }
+                        };
+                    SendInput((uint)suchBegr.Length, suchBegr, INPUT.Size);
+
+                    Thread.Sleep(3000);
+
+                    INPUT[] f12 = new INPUT[]//подтверждение выбора кунда
+                         {
+                             new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.F12,
+                                      wVk = VirtualKeyShort.F12
+                                  }
+                              }
+                          },
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.F12,
+                                      wVk = VirtualKeyShort.F12,
+                                      dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          }
+                        };
+                    SendInput((uint)f12.Length, f12, INPUT.Size);
+
+                    Thread.Sleep(1000);
+
+                    INPUT[] f8 = new INPUT[]//подтверждение выбора кунда
+                         {
+                             new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.F8,
+                                      wVk = VirtualKeyShort.F8
+                                  }
+                              }
+                          },
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.F8,
+                                      wVk = VirtualKeyShort.F8,
+                                      dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          }
+                        };
+                    SendInput((uint)f8.Length, f8, INPUT.Size);
+                    // IntPtr ptrKund = findCaoFenster(hWindow, "TWinControl");
                     // findAllFenster(hWindow);
                     //var allwindLINQ = from str in allwind orderby str ascending select str;
                     //foreach (string name in allwindLINQ)
