@@ -2020,6 +2020,7 @@ namespace gitTest
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
        static IntPtr hWindow = IntPtr.Zero;
+        static List<string> allwind = new List<string>();
         static void Main(string[] args)
         {
             hWindow = FindWindow("CAO.Faktura", null);
@@ -2134,6 +2135,7 @@ namespace gitTest
                                   {
                                       wScan = ScanCodeShort.CONTROL,
                                       wVk = VirtualKeyShort.CONTROL
+                                      
                                   }
                               }
                           },
@@ -2180,9 +2182,45 @@ namespace gitTest
                     SendInput((uint)pInputsNew.Length, pInputsNew, INPUT.Size);
 
                     Thread.Sleep(1000);
+                  
+                    //IntPtr ptrKund = findCaoFenster(hWindow, "TWinControl");
+                    INPUT[] pInputKundList = new INPUT[]
+                        {
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.F3,
+                                      wVk = VirtualKeyShort.F3
+                                  }
+                              }
+                          },
+                            new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.F3,
+                                      wVk = VirtualKeyShort.F3,
+                                      dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          }
+                        };
+                    SetForegroundWindow(hWindow);
+                    SendInput((uint)pInputKundList.Length, pInputKundList, INPUT.Size);
 
-                   //IntPtr ptrKund = 
-                        findAllFenster(hWindow);
+                    // findAllFenster(hWindow);
+                    //var allwindLINQ = from str in allwind orderby str ascending select str;
+                    //foreach (string name in allwindLINQ)
+                    //{
+                    //    Console.WriteLine(name);
+                    //}
                 }
                 else
                 {
@@ -2190,8 +2228,27 @@ namespace gitTest
                 }
             }
         }//main
-        static IntPtr findCaoFenster(IntPtr ptr, string className)
+        static IntPtr findCaoFenster(IntPtr hWnd, string anyName)
         {
+            StringBuilder className = new StringBuilder(50);
+            StringBuilder textWind = new StringBuilder(50);
+            GetClassName(hWnd, className, 50); // получает имя класса-окна
+            GetWindowText(hWnd, textWind, 50);//получает заголовок класса
+            if(className.ToString() == anyName)
+            {
+                return hWnd;
+            }
+            IntPtr ptr = IntPtr.Zero;
+            ptr = GetWindow(hWnd, GetWindowType.GW_CHILD);
+            if (ptr != IntPtr.Zero)//тольк если есть дочерние окна
+            {
+                findCaoFenster(ptr,anyName);
+            }
+            ptr = GetWindow(hWnd, GetWindowType.GW_HWNDNEXT);
+            if (ptr != IntPtr.Zero)
+            {
+                findCaoFenster(ptr, anyName);
+            }
             return IntPtr.Zero;
         }
 
@@ -2205,6 +2262,7 @@ namespace gitTest
                 StringBuilder className = new StringBuilder(50);
                 StringBuilder textWind = new StringBuilder(50);
                 GetClassName(hWnd, className, 50); // получает имя класса-окна
+                allwind.Add(className.ToString());
                 GetWindowText(hWnd, textWind, 50);//получает заголовок класса
                 Console.WriteLine("Class Name: \t" + className.ToString() + "t\t\t\t\t\t" + textWind.ToString());
                 className.Clear();
