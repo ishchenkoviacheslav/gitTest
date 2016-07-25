@@ -2181,8 +2181,8 @@ namespace gitTest
 
                     Thread.Sleep(1000);
 
-                   IntPtr ptrKund = kleinBtnListKund(hWindow);
-
+                   //IntPtr ptrKund = 
+                        findAllFenster(hWindow);
                 }
                 else
                 {
@@ -2190,46 +2190,35 @@ namespace gitTest
                 }
             }
         }//main
-
-        static IntPtr kleinBtnListKund(IntPtr hWnd)
+        static IntPtr findCaoFenster(IntPtr ptr, string className)
         {
+            return IntPtr.Zero;
+        }
+
+        static void findAllFenster(IntPtr hWnd)
+        {
+            
             //TCaoGroupBox Kundendaten
             //TJvDBComboEdit - текстбокс с кноп.
             //TWinControl - мал. кноп
-            if (hWnd != IntPtr.Zero)
-            {
-
-
-                StringBuilder className = new StringBuilder();
-                StringBuilder textWind = new StringBuilder();
+        
+                StringBuilder className = new StringBuilder(50);
+                StringBuilder textWind = new StringBuilder(50);
+                GetClassName(hWnd, className, 50); // получает имя класса-окна
+                GetWindowText(hWnd, textWind, 50);//получает заголовок класса
+                Console.WriteLine("Class Name: \t" + className.ToString() + "t\t\t\t\t\t" + textWind.ToString());
+                className.Clear();
                 IntPtr ptr = IntPtr.Zero;
                 ptr = GetWindow(hWnd, GetWindowType.GW_CHILD);
-                while (true)
+                if (ptr != IntPtr.Zero)//тольк если есть дочерние окна
                 {
-                    GetClassName(ptr, className, 500); // получает имя класса-окна
-                    GetWindowText(ptr, textWind, 500);//получает заголовок класса
-                    Console.WriteLine("Class Name: \t" + className.ToString() + "t\t\t\t\t\t" + "Text Window: \t" + textWind.ToString());
-                    if (className.ToString() == "TCaoGroupBox")
-                    {
-                        //click
-                        Console.WriteLine("fenster war gefunden");//тут рекурсия
-                        kleinBtnListKund(ptr);
-                        break;
-                    }
-                    kleinBtnListKund(ptr);//тут рекурсия
-                    ptr = GetWindow(ptr, GetWindowType.GW_HWNDNEXT);
-                    className.Clear();
-                    if (ptr == IntPtr.Zero)
-                    {
-                        Console.WriteLine(" mehr fenster nicht gefunden");
-                        break;
-                    }
+                     findAllFenster(ptr);
                 }
-
-                return ptr;
-            }
-            Console.WriteLine("gekommet leer IntPtr");
-            return IntPtr.Zero;
+                ptr = GetWindow(hWnd, GetWindowType.GW_HWNDNEXT);
+                if (ptr != IntPtr.Zero)
+                {
+                    findAllFenster(ptr);
+                }
         }
 
     }//Program
