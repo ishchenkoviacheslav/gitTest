@@ -2032,7 +2032,7 @@ namespace gitTest
             }
             else
             {
-                if (true)//проходит проверку если висит окно авторизации - нужно проверять дальше есть ли авторизация
+                if (true)//проходит проверку если висит окно авторизации - нужно проверять дальше есть ли авторизация и не открыты ли другие окна
                 {
                     Console.WriteLine("CAO OK!");
                     Console.WriteLine(hWindow.ToString());
@@ -6753,6 +6753,152 @@ namespace gitTest
                     SendInput((uint)enterArtikel.Length, enterArtikel, INPUT.Size);
                     Thread.Sleep(1000);
 
+
+                    //переход в след. окно
+                    INPUT[] f12nechstFenst = new INPUT[]
+                    {
+                        new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.F12,
+                                      wVk = VirtualKeyShort.F12
+                                  }
+                              }
+                          },
+                        new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.F12,
+                                      wVk = VirtualKeyShort.F12,
+                                      dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          }
+                    };
+                    SendInput((uint)f12nechstFenst.Length, f12nechstFenst, INPUT.Size);
+                    Thread.Sleep(1000);
+                    //диалог печати и закрытие окна
+                    INPUT[] Alt_P = new INPUT[]
+                    {
+                          new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.MENU,
+                                      wVk = VirtualKeyShort.MENU
+                                  }
+                              }
+                          },
+                          new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.KEY_P,
+                                      wVk = VirtualKeyShort.KEY_P
+                                  }
+                              }
+                          },
+                        
+                          new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.KEY_P,
+                                      wVk = VirtualKeyShort.KEY_P,
+                                      dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          },
+                          new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.MENU,
+                                      wVk = VirtualKeyShort.MENU,
+                                      dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          },
+                          new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.ESCAPE,
+                                      wVk = VirtualKeyShort.ESCAPE
+                                  }
+                              }
+                          },
+                          new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.ESCAPE,
+                                      wVk = VirtualKeyShort.ESCAPE,
+                                      dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          }
+                    };
+                    SendInput((uint)Alt_P.Length, Alt_P, INPUT.Size);
+                    Thread.Sleep(1000);
+
+                    
+                    INPUT[] ESC = new INPUT[]
+                    {
+                          new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.ESCAPE,
+                                      wVk = VirtualKeyShort.ESCAPE
+                                  }
+                              }
+                          },
+                          new INPUT()
+                          {
+                              type = InputType.KEYBOARD,
+                              U = new InputUnion()
+                              {
+                                  ki = new KEYBDINPUT()
+                                  {
+                                      wScan = ScanCodeShort.ESCAPE,
+                                      wVk = VirtualKeyShort.ESCAPE,
+                                      dwFlags = KEYEVENTF.KEYUP
+                                  }
+                              }
+                          }
+                    };
+                    SendInput((uint)ESC.Length, ESC, INPUT.Size);
+                    Thread.Sleep(1000);
                     // IntPtr ptrKund = findCaoFenster(hWindow, "TWinControl");
                     // findAllFenster(hWindow);
                     //var allwindLINQ = from str in allwind orderby str ascending select str;
@@ -6767,6 +6913,8 @@ namespace gitTest
                 }
             }
         }//main
+
+
         static IntPtr findCaoFenster(IntPtr hWnd, string anyName)
         {
             StringBuilder className = new StringBuilder(50);
